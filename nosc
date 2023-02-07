@@ -1,0 +1,168 @@
+#!/bin/bash
+
+chlist=({0..9} {a..z})
+ten=10
+for letlist in {a..z}
+do
+	eval $letlist=$ten
+	ten=$(( ten + 1))
+done
+
+efect(){ 
+    len=`wc -c <<< $1`;
+    cuter=1;
+    for i in $(seq `wc -c <<< $1`) ; do
+        
+        echo -n `cut -c$i <<< $1` 
+        sleep 0.015;
+    done
+        echo
+}
+ 
+basinput(){
+echo "                                          $2"
+echo "           (suply a count of SIGNALS [2\36],and tap enter!)           "
+tput cuu1
+tput cuu1
+read  -p "$1"  bas 
+if [ $bas -gt 36 ] ;
+	then
+		echo 
+		echo
+		echo -e "\e[31m                    -  WRONG VALUE -\e"  
+		echo -e "\e[31m                   must be lasser then 37"
+		echo -e '\e[33m'
+		echo 
+	basinput "$1" "$2"
+fi
+echo
+sleep 0.5
+}
+
+numinput(){
+echo
+echo
+echo "                 the number i want to convert is"
+read -p \=======================\>_ number
+
+if [ $option != fd ] ; then 
+	for i in `grep -Po '[0-9a-z]' <<< $number` ; do
+		if [ $((i)) -gt $(( ${chlist[$sr]} - 1 )) ] ; then
+			echo "number dosnt match number system"
+		numinput
+		fi	
+	done
+fi
+nr=$number 
+}
+
+feinput(){
+basinput 'comvert FROM Number-system based on? > '        '(signals) : TO DECIMAL'
+sr=$bas
+numinput
+}
+
+fefunc(){
+locat=$(( `wc -c <<< $number` - 2 ))
+for cuter in `seq $(( $( wc -c <<< $number) - 1 ))` ; do
+
+		sep[$locat]=`cut -c$cuter <<< $number`
+		locat=$(( locat - 1 ))
+done
+
+ens=0
+for power in ${!sep[@]} ; do
+
+		sep[$power]=$(( ${sep[power]} * ${1} ** power ))
+		ens=$(( ens + ${sep[$power]} ))
+done
+sorce="num-system based $bas"
+}
+
+fdinput(){
+echo "                       convert FROM DECIMAL !"
+basinput '              TO Number-system based on? > ' '    (signals)' 
+numinput
+}
+
+fdfunc(){
+while [ $number -gt 0 ] ;
+	do
+		modi=$(($number % $bas)) 
+		conv=${chlist[$modi]}
+		ens+=$conv
+		number=$(($number / $bas )) ;
+done
+
+ens=`rev <<< $ens`
+dest="num-system based $bas"
+sorce="DECIMAL"
+}
+
+fe(){
+feinput 
+fefunc "$bas"
+dest="DECIMAL"
+}
+
+fd(){
+fdinput
+fdfunc 
+}
+
+ee(){ 
+basinput 'convert FROM Number-system based on? > '  '(signals)'
+sr=$bas 
+src=$bas
+sorce="num-system based $bas"
+echo       
+echo    
+basinput '         TO, Number-system based on? > '  '(signals)'
+dest="num-system based $bas"
+numinput
+fefunc "$src"
+number=$ens
+ens=( )
+fdfunc 
+}
+
+by(){
+echo -e '\e[36m'
+efect  "--------------------------THANK_YOU---------------------------"
+exit
+}
+enstable=("  \n")
+menu(){
+echo -e '\e[33m**************************************************************'
+echo -e "*    		 select one of folowing option               *"
+echo -e "*                                                            *"  
+echo -e "*                      fd.  fe.  ee.                         *"
+echo -e "*         						     *"
+echo -e "*	fd : convert from decimal to eatch number sysytem    *"
+echo -e "*	fe : convert from eatch to decimal                   *"
+echo -e "*	ee : convert from eatch number system to eatch       *"
+echo -e "*                                                            *"                                                      
+echo -e "*     	for exit  prese  by                                  *"                            
+echo -e "**************************************************************"
+echo -e ${enstable[@]} 
+read -p  " 		     enter the option > " option
+echo -e "\n" 
+ens=" "
+sep=( ) 
+$option
+enstable+=("$nr in $sorce is equal to $ens in $dest\n")  
+clear
+echo -e "\n" "\n"
+echo "------------------ NUMBER SYSTEM CONVERTET--------------------"
+menu
+}
+  
+echo -e '\e[36m'
+efect '------------WELCOM_TO_THE_ NUMBER_SYSTEM_CONVERTET-------------            '
+menu
+
+
+
+
+
+
